@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 jump_height_a1 = np.array([91,82.7,90.2,91.4,90.5])#alien 1 jump heights with no mass
 jump_height_a1_with_mass = np.array([62.5,45.5,39.5,32.5,28])#alien 1 jump heights with added 5g each time
 inverse_mass_a1 = 1/(np.array([5,10,15,20,25]))#added mass for each jump, inverse for the a linear graph
-standard_dev1 = np.std(jump_height_a1)#standard deviation of the original 5 jumps, used for the uncertainty error bars
+standard_dev1 = np.sqrt(0.5**2 + (np.std(jump_height_a1))**2)#standard deviation of the original 5 jumps, used for the uncertainty error bars
 ori_jump_height_mean = np.mean(jump_height_a1)
 #print(standard_dev1)
 
@@ -21,8 +21,7 @@ m1 = (xy_mean1 - (x_mean1 * y_mean1)) / (xsquare_mean1 - (x_mean1 * x_mean1)) #s
 c1 = (y_mean1 * xsquare_mean1 - (xy_mean1 * x_mean1)) / (xsquare_mean1 - (x_mean1 * x_mean1)) #subbing in the means to calculate
 #the value of c, the intersection with the y axis, for the best line on the graph
 
-deviationsquare1 = (m1 * inverse_mass_a1 + c1 - jump_height_a1_with_mass**2) #calculation of the deviation in order to find goodness of fit on following line
-g1 = np.sum(deviationsquare1)
+#g1 = np.sum(deviationsquare)
 
 #here we need to calculate the chi X^2 value. should be around ~10 i think
 
@@ -35,6 +34,16 @@ plt.plot(inverse_mass_a1, best_line1, 'b--') #plotting the best line with the ca
 dy1 = (standard_dev1*100)/jump_height_a1_with_mass #calculating the uncertainty for each indiviudal point
 plt.errorbar(inverse_mass_a1,jump_height_a1_with_mass,yerr=dy1, fmt='rx')
 #plotting the data points with their corresponding error bars
+deviation = ((m1 * inverse_mass_a1) + (c1 - jump_height_a1_with_mass)) #calculation of the deviation in order to find goodness of fit on following line
+chi_square = np.sum((deviation/dy1)**2)
+
+print(np.std(jump_height_a1))
+print(standard_dev1)
+print(dy1)
+#print(g1)
+print(m1)
+print(c1)
+print(chi_square)
 '''
 ###############################################################################
 #ALIEN 2
